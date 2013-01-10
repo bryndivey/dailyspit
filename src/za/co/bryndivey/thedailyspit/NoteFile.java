@@ -13,11 +13,13 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.DropboxAPI.DropboxFileInfo;
 import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
@@ -32,16 +34,19 @@ class NoteFile {
 	private DropboxAPI<AndroidAuthSession> mDBApi;
 	
 	NoteFile(DropboxAPI<AndroidAuthSession> api) {
-		mDBApi = api;
-		dayFileName = getDayFileName(); 
-		noteFile = new File(Environment.getExternalStorageDirectory(),
-							"data/za.co.bryndivey.thedailyspit/" + dayFileName);
+		this(api, new Date());
 	}
 	
-	private String getDayFileName() {
+	NoteFile(DropboxAPI<AndroidAuthSession> api, Date day)  {
+		mDBApi = api;
+		dayFileName = getDayFileName(day); 
+		noteFile = new File(Environment.getExternalStorageDirectory(),
+							"data/za.co.bryndivey.thedailyspit/" + dayFileName);		
+	}
+	
+	private String getDayFileName(Date day) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date today = new Date();
-		return df.format(today) + ".txt";		
+		return df.format(day) + ".txt";		
 	}
 	
 	public void init() throws Exception{
@@ -140,7 +145,7 @@ class NoteFile {
 		
 	}
 	
-	public void uploadFile() {
+	public void pushToDropbox() {
 		if(mDBApi == null) {
 			Log.e(TAG, "No Dropbox API available");
 			return;
@@ -173,4 +178,36 @@ class NoteFile {
 		}
 		new UploadFileTask().execute(noteFile);
 	}
+	
+	public void pullFromDropbox() {
+		if(mDBApi == null) {
+			Log.e(TAG, "No Dropbox API available");
+			return;
+		}
+		
+		class DownloadFileTask extends AsyncTask<Void, Void, Boolean> {
+			protected Boolean doInBackground(Void... nothing) {
+				FileOutputStream outputStream = null;
+				try {
+				    outputStream = new FileOutputStream(noteFile);
+				    DropboxFileInfo info = mDBApi.getFile("/" + dayFileName, null, outputStream, null);
+				    Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
+				    // /path/to/new/file.txt now has stuff in it.
+				} catch (DropboxException e) {
+				    Log.e("DbExampleLog", "Something went wrong while downloading.");
+				} catch (FileNotFoundException e) {
+				    Log.e("DbExampleLog", "File not found.");
+				} finally {
+				    if (outputStream != null) {
+				        try {
+				            outputStream.close();
+				        } catch (IOException e) {}
+				    }
+				}
+				return true;
+			}
+		}
+		new DownloadFileTask().execute();
+	}
+
 }

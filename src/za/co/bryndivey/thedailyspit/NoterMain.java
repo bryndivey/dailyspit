@@ -115,7 +115,7 @@ public class NoterMain extends Activity {
     	
     	try {
     		noteFile.appendNote(noteText.getText().toString());
-    		noteFile.uploadFile();
+    		noteFile.pushToDropbox();
     		noteText.getText().clear();
     	} catch (Exception e) {
     		Toast.makeText(this, "SOMETHING WENT WRONG " + e.toString(), Toast.LENGTH_LONG).show();
