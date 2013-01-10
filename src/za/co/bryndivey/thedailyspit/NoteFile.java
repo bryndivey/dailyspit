@@ -163,7 +163,7 @@ class NoteFile {
 				    // User has unlinked, ask them to link again here.
 				    Log.e("DbExampleLog", "User has unlinked.");
 				} catch (DropboxException e) {
-				    Log.e("DbExampleLog", "Something went wrong while uploading.");
+				    Log.e("DbExampleLog", "Something went wrong while uploading. " + e.toString());
 				} catch (FileNotFoundException e) {
 				    Log.e("DbExampleLog", "File not found.");
 				} finally {
