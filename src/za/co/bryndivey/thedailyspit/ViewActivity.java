@@ -18,7 +18,7 @@ public class ViewActivity extends Activity {
 		setContentView(R.layout.activity_view);
         TextView textView = (TextView) findViewById(R.id.textView);
         
-    	NoteFile noteFile = new NoteFile();
+    	NoteFile noteFile = new NoteFile(null);
     	
     	try {
     		textView.setText(noteFile.load());

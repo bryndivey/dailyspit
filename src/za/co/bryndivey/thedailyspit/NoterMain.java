@@ -111,11 +111,11 @@ public class NoterMain extends Activity {
     }
     
     public void postClickHandler(View view) {
-    	NoteFile noteFile = new NoteFile();
+    	NoteFile noteFile = new NoteFile(mDBApi);
     	
     	try {
     		noteFile.appendNote(noteText.getText().toString());
-    		noteFile.uploadFile(mDBApi);
+    		noteFile.uploadFile();
     		noteText.getText().clear();
     	} catch (Exception e) {
     		Toast.makeText(this, "SOMETHING WENT WRONG " + e.toString(), Toast.LENGTH_LONG).show();

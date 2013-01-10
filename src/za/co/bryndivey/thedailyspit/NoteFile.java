@@ -2,6 +2,8 @@ package za.co.bryndivey.thedailyspit;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.os.AsyncTask;
@@ -22,17 +24,31 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.exception.DropboxUnlinkedException;
 
 class NoteFile {
-	private static final String TAG = NoteFile.class
-			.getSimpleName();
-	final static File NOTE_FILE = new File(
-			Environment.getExternalStorageDirectory(),
-			"data/za.co.bryndivey.thedailyspit/note.txt");
+	private static final String TAG = NoteFile.class.getSimpleName();
+	
+	private String dayFileName;
+	File noteFile;
 
+	private DropboxAPI<AndroidAuthSession> mDBApi;
+	
+	NoteFile(DropboxAPI<AndroidAuthSession> api) {
+		mDBApi = api;
+		dayFileName = getDayFileName(); 
+		noteFile = new File(Environment.getExternalStorageDirectory(),
+							"data/za.co.bryndivey.thedailyspit/" + dayFileName);
+	}
+	
+	private String getDayFileName() {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = new Date();
+		return df.format(today) + ".txt";		
+	}
+	
 	public void init() throws Exception{
 		try {
-			if (!NOTE_FILE.exists()) {
-				createParentDirectory(NOTE_FILE);
-				NOTE_FILE.createNewFile();
+			if (!noteFile.exists()) {
+				createParentDirectory(noteFile);
+				noteFile.createNewFile();
 			}
 		} catch (IOException e) {
 			throw new Exception("Error initializing LocalFile", e);
@@ -40,7 +56,7 @@ class NoteFile {
 	}
 
 	public void purge() {
-		NOTE_FILE.delete();
+		noteFile.delete();
 	}
 	
 	public static void createParentDirectory(File dest) throws Exception {
@@ -59,13 +75,13 @@ class NoteFile {
 
 	public String load() throws Exception {
 		init();
-		if (!NOTE_FILE.exists()) {
-			Log.w(TAG, NOTE_FILE.getAbsolutePath() + " does not exist!");
-			throw new Exception(NOTE_FILE.getAbsolutePath()
+		if (!noteFile.exists()) {
+			Log.w(TAG, noteFile.getAbsolutePath() + " does not exist!");
+			throw new Exception(noteFile.getAbsolutePath()
 					+ " does not exist!");
 		} else {
 			try {
-				return loadFromFile(NOTE_FILE);
+				return loadFromFile(noteFile);
 			} catch (IOException e) {
 				throw new Exception("Error loading from local file", e);
 			}
@@ -106,13 +122,13 @@ class NoteFile {
 		if (date != null) {
 			date_ms = date.getTime();
 		}
-		return date_ms < NOTE_FILE.lastModified();
+		return date_ms < noteFile.lastModified();
 	}
 	
 	public void appendNote(String note) {
 		// append a new note with date time to notes file
 		try {
-			FileWriter fw = new FileWriter(NOTE_FILE, true);
+			FileWriter fw = new FileWriter(noteFile, true);
 			Date now = new Date();
 			
 			fw.write(now.toString() + "\n");
@@ -124,13 +140,18 @@ class NoteFile {
 		
 	}
 	
-	public void uploadFile(final DropboxAPI<AndroidAuthSession> mDBApi) {
+	public void uploadFile() {
+		if(mDBApi == null) {
+			Log.e(TAG, "No Dropbox API available");
+			return;
+		}
+		
 		class UploadFileTask extends AsyncTask<File, Void, Boolean> {
 			protected Boolean doInBackground(File... files) {
 				FileInputStream inputStream = null;
 				try {
-				    inputStream = new FileInputStream(files[0]);
-				    Entry newEntry = mDBApi.putFileOverwrite("/note.txt", inputStream,
+				    inputStream = new FileInputStream(noteFile);
+				    Entry newEntry = mDBApi.putFileOverwrite("/" + dayFileName, inputStream,
 				            files[0].length(), null);
 				    Log.e("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
 				} catch (DropboxUnlinkedException e) {
@@ -150,6 +171,6 @@ class NoteFile {
 				return true;
 			}
 		}
-		new UploadFileTask().execute(NOTE_FILE);
+		new UploadFileTask().execute(noteFile);
 	}
 }
