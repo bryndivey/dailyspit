@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewActivity" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@id/postButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="50dp"
+        android:fillViewport="true" >
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="10 19:07:50 - Noter] Uploading Noter.apk onto device &apos;0019eb8833c27e&apos;
+[2013-01-10 19:07:50 - Noter] Installing Noter.apk...
+[2013-01-10 19:07:53 - Noter] Success!
+[2013-01-10 19:07:53 - Noter] Starting activity za.co.bryndivey.thedailyspit.NoterMain on device 0019eb8833c27e
+[2013-01-10 19:07:54 - Noter] ActivityManager: Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=za.co.bryndivey.thedailyspit/.NoterMain }
+[2013-01-10 19:09:00 - Noter] ------------------------------
+[2013-01-10 19:09:00 - Noter] Android Launch!
+[2013-01-10 19:09:00 - Noter] adb is running normally.
+[2013-01-10 19:09:00 - Noter] Performing za.co.bryndivey.thedailyspit.NoterMain activity launch
+[2013-01-10 19:09:00 - Noter] Automatic Target Mode: Unable to detect device compatibility. Please select a target device.
+[2013-01-10 19:09:02 - Noter] Uploading Noter.apk onto device &apos;0019eb8833c27e&apos;
+[2013-01-10 19:09:02 - Noter] Installing Noter.apk...
+[2013-01-10 19:09:05 - Noter] Success!
+[2013-01-10 19:09:05 - Noter] Starting activity za.co.bryndivey.thedailyspit.NoterMain on device 0019eb8833c27e
+[2013-01-10 19:09:05 - Noter] ActivityManager: Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=za.co.bryndivey.thedailyspit/.NoterMain }
+[2013-01-10 19:10:19 - Noter] Error in an XML file: aborting build.
+[2013-01-10 19:10:58 - Noter] ------------------------------
+[2013-01-10 19:10:58 - Noter] Android Launch!
+[2013-01-10 19:10:58 - Noter] adb is running normally.
+[2013-01-10 19:10:58 - Noter] Performing za.co.bryndivey.thedailyspit.NoterMain activity launch
+[2013-01-10 19:10:58 - Noter] Automatic Target Mode: Unable to detect device compatibility. Please select a target device.
+[2013-01-10 19:11:00 - Noter] Uploading Noter.apk onto device &apos;0019eb8833c27e&apos;
+[2013-01-10 19:11:00 - Noter] Installing Noter.apk...
+[2013-01-10 19:11:03 - Noter] Success!
+[2013-01-10 19:11:03 - Noter] Starting activity za.co.bryndivey.thedailyspit.NoterMain on device 0019eb8833c27e
+[2013-01-10 19:11:03 - Noter] ActivityManager: Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=za.co.bryndivey.thedailyspit/.NoterMain }" />
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/postButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="postClickHandler"      
+        android:text="Post" />
+
+</RelativeLayout>
