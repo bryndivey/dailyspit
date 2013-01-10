@@ -1,6 +1,6 @@
 package za.co.bryndivey.thedailyspit;
 
-import za.co.bryndivey.thedailyspit.NoteFile;
+import za.co.bryndivey.thedailyspit.NoteFileFactory;
 import za.co.bryndivey.thedailyspit.DropboxComms;
 
 import com.dropbox.client2.DropboxAPI;
@@ -58,7 +58,7 @@ public class NoterMain extends Activity {
     }
     
     public void postClickHandler(View view) {
-    	NoteFile noteFile = new NoteFile(mDBApi);
+    	NoteFile noteFile = NoteFileFactory.getNoteFileForToday(mDBApi);
     	
     	try {
     		noteFile.appendNote(noteText.getText().toString());

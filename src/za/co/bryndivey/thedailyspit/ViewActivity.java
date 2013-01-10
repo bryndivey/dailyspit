@@ -5,6 +5,7 @@ import za.co.bryndivey.thedailyspit.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -18,12 +19,17 @@ public class ViewActivity extends Activity {
 		setContentView(R.layout.activity_view);
         TextView textView = (TextView) findViewById(R.id.textView);
         
-    	NoteFile noteFile = new NoteFile(null);
+    	NoteFile noteFile = NoteFileFactory.getNoteFileForToday(null);
     	
     	try {
     		textView.setText(noteFile.load());
     	} catch (Exception e) {
     		Toast.makeText(this, "SOMETHING WENT WRONG " + e.toString(), Toast.LENGTH_LONG).show();
+    	}
+    	
+    	java.util.List<String> files = NoteFileFactory.listLocalNoteFiles();
+    	for(String f : files) {
+    		Log.e("me", f);
     	}
 	}
 

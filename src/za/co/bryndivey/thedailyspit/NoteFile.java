@@ -40,8 +40,8 @@ class NoteFile {
 	NoteFile(DropboxAPI<AndroidAuthSession> api, Date day)  {
 		mDBApi = api;
 		dayFileName = getDayFileName(day); 
-		noteFile = new File(Environment.getExternalStorageDirectory(),
-							"data/za.co.bryndivey.thedailyspit/" + dayFileName);		
+		// TODO: pass in to constructor
+		noteFile = Util.getStorageFile(dayFileName);	
 	}
 	
 	private String getDayFileName(Date day) {
