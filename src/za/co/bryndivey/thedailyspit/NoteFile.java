@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -135,6 +137,14 @@ class NoteFile implements Parcelable {
 			}
 		}
 	    return fileData.toString();
+	}
+	
+	public List<Note> loadNotes() throws Exception {
+		List<Note> notes = new ArrayList<Note>();
+		for(String l : load().split("\n\n")) {
+			notes.add(new Note(l));
+		}
+		return notes;
 	}
 	
 	public boolean noteFileModifiedSince(Date date) {

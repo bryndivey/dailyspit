@@ -1,5 +1,7 @@
 package za.co.bryndivey.thedailyspit;
 
+import java.util.List;
+
 import za.co.bryndivey.thedailyspit.R;
 
 import android.os.Bundle;
@@ -25,6 +27,10 @@ public class ViewActivity extends Activity {
         NoteFile noteFile = bundle.getParcelable("za.co.bryndivey.thedailyspit.notefile");
     	
     	try {
+    		List<Note> notes = noteFile.loadNotes();
+    		for (Note n : notes) {
+    			Log.e("bla", n.toString());
+    		}
     		textView.setText(noteFile.load());
     		scrollView.post(new Runnable() {
     			public void run() {
