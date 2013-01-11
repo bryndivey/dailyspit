@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,13 +18,19 @@ public class ViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view);
-        TextView textView = (TextView) findViewById(R.id.textView);
-    
+		TextView textView = (TextView) findViewById(R.id.textView);
+		final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+	    
         Bundle bundle = getIntent().getExtras();
         NoteFile noteFile = bundle.getParcelable("za.co.bryndivey.thedailyspit.notefile");
     	
     	try {
     		textView.setText(noteFile.load());
+    		scrollView.post(new Runnable() {
+    			public void run() {
+    				scrollView.scrollTo(0, 100000);
+    			}
+    		});
     	} catch (Exception e) {
     		Toast.makeText(this, "SOMETHING WENT WRONG " + e.toString(), Toast.LENGTH_LONG).show();
     	}

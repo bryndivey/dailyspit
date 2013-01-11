@@ -5,7 +5,7 @@
     tools:context=".ViewActivity" >
 
     <ScrollView
-        android:id="@+id/scrollView1"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignBottom="@id/postButton"
