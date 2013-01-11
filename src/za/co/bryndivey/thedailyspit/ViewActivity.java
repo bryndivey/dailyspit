@@ -7,11 +7,11 @@ import za.co.bryndivey.thedailyspit.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewActivity extends Activity {
@@ -20,23 +20,23 @@ public class ViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view);
-		TextView textView = (TextView) findViewById(R.id.textView);
-		final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+		//final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollNoteView);
 	    
         Bundle bundle = getIntent().getExtras();
         NoteFile noteFile = bundle.getParcelable("za.co.bryndivey.thedailyspit.notefile");
     	
     	try {
     		List<Note> notes = noteFile.loadNotes();
-    		for (Note n : notes) {
-    			Log.e("bla", n.toString());
-    		}
-    		textView.setText(noteFile.load());
-    		scrollView.post(new Runnable() {
-    			public void run() {
-    				scrollView.scrollTo(0, 100000);
-    			}
-    		});
+    		ArrayAdapter<Note> adapter = new ArrayAdapter<Note>(this,
+  				  android.R.layout.simple_list_item_1, android.R.id.text1, notes);
+    		ListView listView = (ListView) findViewById(R.id.listView);
+    		listView.setAdapter(adapter);
+  		
+    		//scrollView.post(new Runnable() {
+    		//	public void run() {
+    		//		scrollView.scrollTo(0, 100000);
+    		//	}
+    		//});
     	} catch (Exception e) {
     		Toast.makeText(this, "SOMETHING WENT WRONG " + e.toString(), Toast.LENGTH_LONG).show();
     	}

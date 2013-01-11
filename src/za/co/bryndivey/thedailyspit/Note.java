@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.util.Log;
-
 public class Note {
 	public Date date;
 	public String string;
@@ -16,7 +14,6 @@ public class Note {
 	}
 	
 	Note(String s) {
-		Log.e("note", s);
 		String dateString = s.split("\n")[0];
 		String rest = s.replace(dateString + "\n", "");
 		

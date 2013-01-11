@@ -1,7 +1,5 @@
 package za.co.bryndivey.thedailyspit;
 
-import java.text.ParseException;
-
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 
@@ -17,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ListNotesActivity extends Activity {
 
