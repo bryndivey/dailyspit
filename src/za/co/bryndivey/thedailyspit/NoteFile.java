@@ -3,11 +3,14 @@ package za.co.bryndivey.thedailyspit;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -25,11 +28,13 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.exception.DropboxUnlinkedException;
 
-class NoteFile {
+class NoteFile implements Parcelable {
 	private static final String TAG = NoteFile.class.getSimpleName();
 	
+	private String dayString;
 	private String dayFileName;
-	File noteFile;
+	private Date day;
+	private File noteFile;
 
 	private DropboxAPI<AndroidAuthSession> mDBApi;
 	
@@ -37,16 +42,26 @@ class NoteFile {
 		this(api, new Date());
 	}
 	
-	NoteFile(DropboxAPI<AndroidAuthSession> api, Date day)  {
+	NoteFile(DropboxAPI<AndroidAuthSession> api, String dateString) throws ParseException {
+		this(api, new SimpleDateFormat("yyyy-MM-dd").parse(dateString));
+	}
+
+	NoteFile(DropboxAPI<AndroidAuthSession> api, Date d)  {
+		dayString = new SimpleDateFormat("yyyy-MM-dd").format(d);
 		mDBApi = api;
+		day = d;
 		dayFileName = getDayFileName(day); 
 		// TODO: pass in to constructor
 		noteFile = Util.getStorageFile(dayFileName);	
 	}
-	
+
 	private String getDayFileName(Date day) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		return df.format(day) + ".txt";		
+	}
+	
+	public String toString() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(day);
 	}
 	
 	public void init() throws Exception{
@@ -209,5 +224,32 @@ class NoteFile {
 		}
 		new DownloadFileTask().execute();
 	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeString(dayString);
+		
+	}
+	
+	 public static final Parcelable.Creator<NoteFile> CREATOR = new Parcelable.Creator<NoteFile>() {
+		 public NoteFile createFromParcel(Parcel in) {
+			 try {
+				 return new NoteFile(null, in.readString());
+			 } catch (Exception e) {
+				 Log.e(TAG, "Error fucking making the fucking thing");
+				 return new NoteFile(null);
+			 }
+		 }
+
+		 public NoteFile[] newArray(int size) {
+			 return new NoteFile[size];
+		 }
+	 };
 
 }

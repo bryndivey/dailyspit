@@ -2,6 +2,8 @@ package za.co.bryndivey.thedailyspit;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -18,12 +20,17 @@ public class NoteFileFactory {
 		return new NoteFile(api, date);
 	}
 	
-	public static List<String> listLocalNoteFiles() {
+	public static List<NoteFile> listLocalNoteFiles(DropboxAPI<AndroidAuthSession> api) throws ParseException {
 		FilenameFilter filter = new FilenameFilter() {
 			public boolean accept(File directory, String filename) {
 				return filename.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}.txt");
 			}
 		};
-		return Arrays.asList(Util.getStorageRoot().list(filter));
+		
+		List<NoteFile> noteFiles = new ArrayList<NoteFile>();
+		for(String f : Util.getStorageRoot().list(filter)) {
+			noteFiles.add(new NoteFile(api, f.replace(".txt", "")));
+		}
+		return noteFiles;
 	}
 }

@@ -18,18 +18,14 @@ public class ViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view);
         TextView textView = (TextView) findViewById(R.id.textView);
-        
-    	NoteFile noteFile = NoteFileFactory.getNoteFileForToday(null);
+    
+        Bundle bundle = getIntent().getExtras();
+        NoteFile noteFile = bundle.getParcelable("za.co.bryndivey.thedailyspit.notefile");
     	
     	try {
     		textView.setText(noteFile.load());
     	} catch (Exception e) {
     		Toast.makeText(this, "SOMETHING WENT WRONG " + e.toString(), Toast.LENGTH_LONG).show();
-    	}
-    	
-    	java.util.List<String> files = NoteFileFactory.listLocalNoteFiles();
-    	for(String f : files) {
-    		Log.e("me", f);
     	}
 	}
 

@@ -71,7 +71,7 @@ public class NoterMain extends Activity {
     }
     
 	public void viewClickHandler(View v) {
-		Intent intent = new Intent(v.getContext(), ViewActivity.class);
+		Intent intent = new Intent(v.getContext(), ListNotesActivity.class);
 		startActivity(intent);
 	}
     

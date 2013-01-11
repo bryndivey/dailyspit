@@ -40,8 +40,12 @@
             </intent-filter>
         </activity>
         <activity
-    		android:name="za.co.bryndivey.thedailyspit.ViewActivity"
+            android:name="za.co.bryndivey.thedailyspit.ViewActivity"
             android:label="@string/title_activity_view" >
+        </activity>
+        <activity
+            android:name="za.co.bryndivey.thedailyspit.ListNotesActivity"
+            android:label="@string/title_activity_list_notes" >
         </activity>
     </application>
 
